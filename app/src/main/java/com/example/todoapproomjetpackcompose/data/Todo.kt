@@ -3,7 +3,7 @@ package com.example.todoapproomjetpackcompose.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "todo")
 data class Todo(
     @PrimaryKey val id: Int,
     val title: String,
