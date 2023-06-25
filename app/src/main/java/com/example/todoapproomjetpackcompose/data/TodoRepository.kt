@@ -8,8 +8,7 @@ class TodoRepository(context: Context) {
         const val TAG = "TodoRepository"
     }
 
-    private val db = TodoDatabase.createDb(context)
-    private val dao = db.todoDao()
+    private val dao = TodoDatabase.createDb(context).todoDao()
 
     suspend fun getTodoList(): List<Todo> {
         Log.d(TAG, "getTodoList")
