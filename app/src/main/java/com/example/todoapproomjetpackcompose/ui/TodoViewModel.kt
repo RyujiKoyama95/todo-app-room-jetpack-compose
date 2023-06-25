@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.todoapproomjetpackcompose.data.Todo
+import com.example.todoapproomjetpackcompose.data.TodoDatabase
 import com.example.todoapproomjetpackcompose.data.TodoRepository
 import com.example.todoapproomjetpackcompose.data.TodoStatus
 import kotlinx.coroutines.launch
@@ -22,7 +23,8 @@ class TodoViewModel(
                 extras: CreationExtras
             ): T {
                 val context = checkNotNull(extras[APPLICATION_KEY])
-                val repository = TodoRepository(context)
+                val dao = TodoDatabase.createDb(context).todoDao()
+                val repository = TodoRepository(dao)
                 return TodoViewModel(repository) as T
             }
         }

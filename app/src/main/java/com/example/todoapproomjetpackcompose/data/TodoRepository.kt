@@ -1,14 +1,11 @@
 package com.example.todoapproomjetpackcompose.data
 
-import android.content.Context
 import android.util.Log
 
-class TodoRepository(context: Context) {
+class TodoRepository(private val dao: TodoDao) {
     companion object {
         const val TAG = "TodoRepository"
     }
-
-    private val dao = TodoDatabase.createDb(context).todoDao()
 
     suspend fun getTodoList(): List<Todo> {
         Log.d(TAG, "getTodoList")
