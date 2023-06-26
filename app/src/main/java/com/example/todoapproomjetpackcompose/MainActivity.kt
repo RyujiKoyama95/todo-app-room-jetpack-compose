@@ -50,8 +50,6 @@ class MainActivity : ComponentActivity() {
                     createTodo(dummyData)
                     Thread.sleep(5000)
 
-                    getTodoList()
-                    Thread.sleep(5000)
                     val text = todoList[0].title
 
                     Greeting(text)
@@ -77,6 +75,7 @@ class MainActivity : ComponentActivity() {
                 Log.d(TAG, "createTodo start")
                 // Todo: daoのAPIが呼べていなさそう
                 dao.insert(todo)
+                getTodoList()
                 Log.d(TAG, "createTodo end")
             }
         }
