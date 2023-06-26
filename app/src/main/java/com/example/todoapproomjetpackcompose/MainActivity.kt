@@ -46,11 +46,12 @@ class MainActivity : ComponentActivity() {
                     dao = TodoDatabase.createDb(applicationContext).todoDao()
                     todoList = mutableListOf<Todo>()
 
-                    val dummyData = Todo(1,"dummy", TodoStatus.NOT_COMPLETED)
+                    val dummyData = Todo(title = "dummy data", status = TodoStatus.NOT_COMPLETED)
                     createTodo(dummyData)
-                    Thread.sleep(5000)
 
-                    val text = todoList[0].title
+                    Log.d(TAG, "onCreate todoList=$todoList")
+//                    val text = todoList[0].title
+                    val text = "test"
 
                     Greeting(text)
                 }
@@ -64,6 +65,7 @@ class MainActivity : ComponentActivity() {
                 dao.observeAll().forEach {
                     todoList.add(it)
                 }
+                Log.d(TAG, "getTodoList todoList=$todoList")
                 Log.d(TAG, "getTodoList end")
             }
         }
