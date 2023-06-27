@@ -22,6 +22,7 @@ import com.example.todoapproomjetpackcompose.ui.theme.TodoAppRoomJetpackComposeT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
@@ -38,7 +39,6 @@ class MainActivity : ComponentActivity() {
 
         val dummyData = Todo(title = "dummy data", status = TodoStatus.NOT_COMPLETED)
         viewModel.createTodo(dummyData)
-        Thread.sleep(5000)
         Log.d(TAG, "onCreate todoList=${viewModel.todoList}")
         //val text = viewModel.todoList[0].title
         val text = "test"
