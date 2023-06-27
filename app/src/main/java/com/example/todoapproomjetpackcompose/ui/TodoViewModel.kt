@@ -42,15 +42,16 @@ class TodoViewModel(
     fun getTodoList() {
         viewModelScope.launch {
             todoList = repository.getTodoList()
-            Log.d(TAG, "1 $todoList")
+            Log.d(TAG, "getTodoList todoList=$todoList")
         }
-        Log.d(TAG, "2 $todoList")
     }
 
     fun createTodo(todo: Todo) {
+        Log.d(TAG, "createTodo")
         viewModelScope.launch {
             repository.createTodo(todo)
         }
+        getTodoList()
     }
 
     fun delete(todo: Todo) {

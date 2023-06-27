@@ -29,9 +29,7 @@ class MainActivity : ComponentActivity() {
         const val TAG = "MainActivity"
     }
 
-//    val viewModel: TodoViewModel by viewModels {TodoViewModel.factory}
-    lateinit var dao: TodoDao
-    lateinit var todoList: MutableList<Todo>
+    private val viewModel: TodoViewModel by viewModels {TodoViewModel.factory}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,50 +41,19 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Log.d(TAG, "onCreate")
-                    dao = TodoDatabase.createDb(applicationContext).todoDao()
-                    todoList = mutableListOf<Todo>()
 
                     val dummyData = Todo(title = "dummy data", status = TodoStatus.NOT_COMPLETED)
-                    createTodo(dummyData)
+                    viewModel.getTodoList()
+                    Log.d(TAG, "onCreate step1")
+                    Thread.sleep(15000)
 
-                    Log.d(TAG, "onCreate todoList=$todoList")
-//                    val text = todoList[0].title
+                    Log.d(TAG, "onCreate step2")
+                    Log.d(TAG, "onCreate todoList=${viewModel.todoList}")
+//                    val text = viewModel.todoList[0].title
                     val text = "test"
 
                     Greeting(text)
                 }
-            }
-        }
-    }
-    private fun getTodoList() {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.Default) {
-                Log.d(TAG, "getTodoList start")
-                dao.observeAll().forEach {
-                    todoList.add(it)
-                }
-                Log.d(TAG, "getTodoList todoList=$todoList")
-                Log.d(TAG, "getTodoList end")
-            }
-        }
-    }
-
-    private fun createTodo(todo: Todo) {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.Default) {
-                Log.d(TAG, "createTodo start")
-                // Todo: daoのAPIが呼べていなさそう
-                dao.insert(todo)
-                getTodoList()
-                Log.d(TAG, "createTodo end")
-            }
-        }
-    }
-
-    private fun delete(todo: Todo) {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.Default) {
-                dao.delete(todo)
             }
         }
     }
