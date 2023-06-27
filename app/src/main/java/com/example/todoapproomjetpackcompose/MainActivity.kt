@@ -33,6 +33,16 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d(TAG, "onCreate")
+
+        val dummyData = Todo(title = "dummy data", status = TodoStatus.NOT_COMPLETED)
+        viewModel.createTodo(dummyData)
+        Thread.sleep(5000)
+        Log.d(TAG, "onCreate todoList=${viewModel.todoList}")
+        //val text = viewModel.todoList[0].title
+        val text = "test"
+
         setContent {
             TodoAppRoomJetpackComposeTheme {
                 // A surface container using the 'background' color from the theme
@@ -40,18 +50,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Log.d(TAG, "onCreate")
-
-                    val dummyData = Todo(title = "dummy data", status = TodoStatus.NOT_COMPLETED)
-                    viewModel.getTodoList()
-                    Log.d(TAG, "onCreate step1")
-                    Thread.sleep(15000)
-
-                    Log.d(TAG, "onCreate step2")
-                    Log.d(TAG, "onCreate todoList=${viewModel.todoList}")
-//                    val text = viewModel.todoList[0].title
-                    val text = "test"
-
                     Greeting(text)
                 }
             }
