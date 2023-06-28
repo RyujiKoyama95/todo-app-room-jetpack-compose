@@ -12,18 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapproomjetpackcompose.data.Todo
-import com.example.todoapproomjetpackcompose.data.TodoDao
-import com.example.todoapproomjetpackcompose.data.TodoDatabase
-import com.example.todoapproomjetpackcompose.data.TodoRepository
 import com.example.todoapproomjetpackcompose.data.TodoStatus
 import com.example.todoapproomjetpackcompose.ui.TodoViewModel
 import com.example.todoapproomjetpackcompose.ui.theme.TodoAppRoomJetpackComposeTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -39,9 +34,7 @@ class MainActivity : ComponentActivity() {
 
         val dummyData = Todo(title = "dummy data", status = TodoStatus.NOT_COMPLETED)
         viewModel.createTodo(dummyData)
-        Log.d(TAG, "onCreate todoList=${viewModel.todoList}")
-        //val text = viewModel.todoList[0].title
-        val text = "test"
+        Log.d(TAG, "onCreate todoList=${viewModel.todos}")
 
         setContent {
             TodoAppRoomJetpackComposeTheme {
@@ -50,7 +43,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(text)
+                    val todoList by viewModel.todos.observeAsState(emptyList())
+
+                    if(todoList.isNotEmpty()) {
+                        Log.d(TAG,"setContent todoList=$todoList")
+                        Greeting(todoList[0].title)
+                    }
                 }
             }
         }

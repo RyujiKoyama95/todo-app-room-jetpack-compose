@@ -14,7 +14,6 @@ class TodoRepository(private val dao: TodoDao) {
 
     suspend fun createTodo(todo: Todo) {
         Log.d(TAG, "createTodo")
-        // Todo: daoのAPIが呼べていなさそう
         dao.insert(todo)
     }
 
