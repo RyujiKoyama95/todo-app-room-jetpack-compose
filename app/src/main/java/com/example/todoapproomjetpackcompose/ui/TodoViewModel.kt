@@ -1,6 +1,8 @@
 package com.example.todoapproomjetpackcompose.ui
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -37,12 +39,13 @@ class TodoViewModel(
         createTodo(dummyData)
     }
 
-    var todoList = listOf<Todo>()
+    private var _todos = MutableLiveData<List<Todo>>()
+    val todos: LiveData<List<Todo>> = _todos
 
     fun getTodoList() {
         viewModelScope.launch {
-            todoList = repository.getTodoList()
-            Log.d(TAG, "getTodoList todoList=$todoList")
+            _todos.postValue(repository.getTodoList())
+            Log.d(TAG, "getTodoList _todos=$_todos")
         }
     }
 
