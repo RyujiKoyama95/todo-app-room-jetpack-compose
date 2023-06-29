@@ -53,8 +53,8 @@ class TodoViewModel(
         Log.d(TAG, "createTodo")
         viewModelScope.launch {
             repository.createTodo(todo)
+            getTodoList()
         }
-        getTodoList()
     }
 
     fun delete(todo: Todo) {
