@@ -44,14 +44,19 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val todoList by viewModel.todos.observeAsState(emptyList())
-
-                    if(todoList.isNotEmpty()) {
-                        Log.d(TAG,"setContent todoList=$todoList")
-                        Greeting(todoList[0].title)
-                    }
+                    Greeting(showTodoTitle(todoList))
                 }
             }
         }
+    }
+
+    private fun showTodoTitle(todoList: List<Todo>): String {
+        var title = ""
+        if(todoList.isNotEmpty()) {
+            Log.d(TAG,"showTodoTitle todoList=$todoList")
+            title = todoList[0].title
+        }
+        return title
     }
 }
 
