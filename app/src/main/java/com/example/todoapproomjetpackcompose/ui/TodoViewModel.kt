@@ -41,6 +41,12 @@ class TodoViewModel(
         }
     }
 
+    fun updateTodo(todo: Todo) {
+        viewModelScope.launch {
+            repository.updateTodo(todo )
+        }
+    }
+
     fun delete(todo: Todo) {
         viewModelScope.launch {
             repository.delete(todo)

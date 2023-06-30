@@ -12,6 +12,11 @@ class TodoRepository(private val dao: TodoDao) {
         return dao.observeAll()
     }
 
+    suspend fun updateTodo(todo: Todo) {
+        Log.d(TAG, "updateTodo")
+        dao.update(todo)
+    }
+
     suspend fun createTodo(todo: Todo) {
         Log.d(TAG, "createTodo")
         dao.insert(todo)
