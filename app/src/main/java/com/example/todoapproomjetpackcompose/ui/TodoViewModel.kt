@@ -43,7 +43,8 @@ class TodoViewModel(
 
     fun updateTodo(todo: Todo) {
         viewModelScope.launch {
-            repository.updateTodo(todo )
+            repository.updateTodo(todo)
+            getTodoList()
         }
     }
 
