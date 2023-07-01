@@ -1,10 +1,6 @@
 package com.example.todoapproomjetpackcompose.data
 
 import android.util.Log
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import com.example.todoapproomjetpackcompose.ui.TodoViewModel
 
 class TodoRepository(private val dao: TodoDao) {
     companion object {
@@ -12,7 +8,7 @@ class TodoRepository(private val dao: TodoDao) {
     }
 
     suspend fun getTodoList(): List<Todo> {
-        Log.d(TAG, "getTodoList")
+        Log.d(TAG, "getTodoList todos=${dao.observeAll()}")
         return dao.observeAll()
     }
 

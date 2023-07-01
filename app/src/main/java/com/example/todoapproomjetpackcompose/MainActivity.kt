@@ -89,6 +89,7 @@ fun MainContent(viewModel: TodoViewModel) {
         val todos = viewModel.todos.value
         if (todos != null) {
             if (todos.isNotEmpty()) {
+                Log.d(MainActivity.TAG, "MainContent todos=$todos")
                 title.value = todos[0].title
                 description.value = todos[0].description
             }
@@ -119,12 +120,14 @@ fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
             }
         },
         confirmButton = {
-            Button(onClick = { isShowDialog.value = false }) {
+            Button(onClick = {
+                isShowDialog.value = false
+                viewModel.createTodo(
+                    Todo(title = title, description = description, status = TodoStatus.NOT_COMPLETED)
+                )
+            }) {
                 Text(text = "OK")
             }
-            viewModel.createTodo(
-                Todo(title = title, description = description, status = TodoStatus.NOT_COMPLETED)
-            )
         },
         dismissButton =  {
             Button(onClick = { isShowDialog.value = false }) {

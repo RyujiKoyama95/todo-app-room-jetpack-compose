@@ -19,7 +19,7 @@ class TodoViewModel(
     }
     private val repository: TodoRepository
     private var _todos = MutableLiveData<List<Todo>>()
-    val todos: LiveData<List<Todo>> = _todos
+    var todos: LiveData<List<Todo>> = _todos
 
     init {
         Log.d(TAG, "init")
@@ -29,7 +29,11 @@ class TodoViewModel(
 
     private fun getTodoList() {
         viewModelScope.launch {
-            _todos.postValue(repository.getTodoList())
+            val list = repository.getTodoList()
+            _todos.postValue(list)
+            todos = _todos
+            Log.d(TAG, "todos=${todos.value}")
+            Log.d(TAG, "_todos=${_todos.value}")
         }
     }
 
