@@ -8,7 +8,7 @@ data class Todo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val description: String,
-    val status: TodoStatus
+    val status: TodoStatus = TodoStatus.NOT_COMPLETED
 )
 
 enum class TodoStatus {

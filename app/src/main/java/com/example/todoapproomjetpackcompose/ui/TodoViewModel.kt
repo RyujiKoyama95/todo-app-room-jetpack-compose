@@ -6,9 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapproomjetpackcompose.data.Todo
 import com.example.todoapproomjetpackcompose.data.TodoDatabase
 import com.example.todoapproomjetpackcompose.data.TodoRepository
+import com.example.todoapproomjetpackcompose.data.TodoStatus
 import kotlinx.coroutines.launch
 
 class TodoViewModel(
@@ -30,10 +32,16 @@ class TodoViewModel(
     private fun getTodoList() {
         viewModelScope.launch {
             val list = repository.getTodoList()
-            _todos.postValue(list)
-            todos = _todos
+            _todos.value = list
             Log.d(TAG, "todos=${todos.value}")
             Log.d(TAG, "_todos=${_todos.value}")
+        }
+    }
+
+    fun addTodo(title: String, description: String) {
+        viewModelScope.launch {
+            val todo = Todo(title = title, description = description)
+            createTodo(todo)
         }
     }
 
