@@ -1,22 +1,35 @@
 package com.example.todoapproomjetpackcompose
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -42,6 +55,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // viewModelをviewへ繋ぎこむ
+                    // Composable関数の中でviewmodelインスタンスを取得する場合はlifecycle-viewmodel-composeライブラリのviewModel()を使用する
                     val owner = LocalViewModelStoreOwner.current
                     owner?.let {
                         val viewModel = viewModel<TodoViewModel>(
@@ -57,11 +72,48 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContent(viewModel: TodoViewModel) {
-    Scaffold(FloatingActionButton(onClick = { /*TODO*/ }) {
+    val isShowDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
 
+    Scaffold(floatingActionButton =  {
+        FloatingActionButton(onClick = { isShowDialog.value = true }) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = "Add Button")
+        }
     }) {
-
+        if (isShowDialog.value) {
+            EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
+        }
     }
+}
+
+// Composable関数内で使用できるMutableStateはUI状態を保持するオブジェクト
+// MutableState.valueが更新されると自動でComposable関数が再評価される(UIが更新される)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
+    AlertDialog(
+        onDismissRequest = { isShowDialog.value = false },
+        title = { Text(text = "create Todo") },
+        text = {
+            Column {
+                Text(text = "title")
+                TextField(value = "", onValueChange = { /* Todo */ })
+                Text(text = "description")
+                TextField(value = "", onValueChange = { /* Todo */ })
+            }
+        },
+        confirmButton = {
+            Button(onClick = { isShowDialog.value = false }) {
+                Text(text = "OK")
+            }
+        },
+        dismissButton =  {
+            Button(onClick = { isShowDialog.value = false }) {
+                Text(text = "Cancel")
+            }
+        }
+    )
 }
