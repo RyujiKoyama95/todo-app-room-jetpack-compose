@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -27,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -104,11 +106,13 @@ fun MainContent(viewModel: TodoViewModel) {
             EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
         }
 
-        Column {
-            Text(text = title.value)
-            Spacer(modifier = Modifier.padding(20.dp))
-            Text(text = description.value)
-        }
+//        Column {
+//            Text(text = title.value)
+//            Spacer(modifier = Modifier.padding(20.dp))
+//            Text(text = description.value)
+//        }
+        
+        TodoList(viewModel = viewModel)
     }
 }
 
@@ -145,6 +149,16 @@ fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
             }
         }
     )
+}
+
+@Composable
+fun TodoList(viewModel: TodoViewModel) {
+    val observedTodos = viewModel.todos.observeAsState()
+    observedTodos.value?.forEach { 
+        Text(text = it.title)
+        Text(text = it.description)
+        Spacer(modifier = Modifier.padding(10.dp))
+    }
 }
 
 interface OnCreateTodoListener {
