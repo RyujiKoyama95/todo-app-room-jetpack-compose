@@ -6,11 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todoapproomjetpackcompose.OnCreateTodoListener
 import com.example.todoapproomjetpackcompose.data.Todo
 import com.example.todoapproomjetpackcompose.data.TodoDatabase
 import com.example.todoapproomjetpackcompose.data.TodoRepository
-import com.example.todoapproomjetpackcompose.data.TodoStatus
 import kotlinx.coroutines.launch
 
 class TodoViewModel(
@@ -20,6 +19,7 @@ class TodoViewModel(
         const val TAG = "TodoViewModel"
     }
     private val repository: TodoRepository
+    private var listener: OnCreateTodoListener? = null
     private var _todos = MutableLiveData<List<Todo>>()
     var todos: LiveData<List<Todo>> = _todos
 
@@ -35,6 +35,8 @@ class TodoViewModel(
             _todos.value = list
             Log.d(TAG, "todos=${todos.value}")
             Log.d(TAG, "_todos=${_todos.value}")
+
+            listener?.notifyCreateTodo()
         }
     }
 
@@ -65,5 +67,9 @@ class TodoViewModel(
             repository.delete(todo)
             getTodoList()
         }
+    }
+
+    fun setListener(listener: OnCreateTodoListener) {
+        this.listener = listener
     }
 }

@@ -7,7 +7,10 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -28,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapproomjetpackcompose.data.Todo
@@ -82,21 +86,29 @@ fun MainContent(viewModel: TodoViewModel) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add Button")
         }
     }) {
+        val listener = object : OnCreateTodoListener {
+            override fun notifyCreateTodo() {
+                val todos = viewModel.todos.value
+                Log.d(MainActivity.TAG, "MainContent todos=$todos")
+                if (todos != null) {
+                    if (todos.isNotEmpty()) {
+                        title.value = todos.last().title
+                        description.value = todos.last().description
+                    }
+                }
+            }
+        }
+        viewModel.setListener(listener)
+
         if (isShowDialog.value) {
             EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
         }
 
-        val todos = viewModel.todos.value
-        Log.d(MainActivity.TAG, "MainContent todos=$todos")
-        if (todos != null) {
-            if (todos.isNotEmpty()) {
-                title.value = todos.last().title
-                description.value = todos.last().description
-            }
+        Column {
+            Text(text = title.value)
+            Spacer(modifier = Modifier.padding(20.dp))
+            Text(text = description.value)
         }
-
-        Text(text = title.value)
-        Text(text = description.value)
     }
 }
 
@@ -133,4 +145,8 @@ fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
             }
         }
     )
+}
+
+interface OnCreateTodoListener {
+    fun notifyCreateTodo()
 }
