@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -154,10 +155,12 @@ fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
 @Composable
 fun TodoList(viewModel: TodoViewModel) {
     val observedTodos = viewModel.todos.observeAsState()
-    observedTodos.value?.forEach { 
-        Text(text = it.title)
-        Text(text = it.description)
-        Spacer(modifier = Modifier.padding(10.dp))
+    observedTodos.value?.let { todos ->
+        LazyColumn {
+            items(todos) {
+                Text(text = it.title)
+            }
+        }
     }
 }
 
