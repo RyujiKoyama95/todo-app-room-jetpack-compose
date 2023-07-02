@@ -37,6 +37,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -175,9 +176,17 @@ fun TodoList(viewModel: TodoViewModel) {
 
 @Composable
 fun TodoRow(todo: Todo) {
-    Card() {
-        Row() {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(text = todo.title)
+            Spacer(modifier = Modifier.weight(1F))
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
             }
