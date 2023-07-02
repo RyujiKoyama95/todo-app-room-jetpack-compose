@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
@@ -80,6 +81,10 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContent(viewModel: TodoViewModel) {
+    LaunchedEffect(Unit) {
+        viewModel.getTodoList()
+    }
+    
     val isShowDialog = remember { mutableStateOf(false) }
     val title = remember { mutableStateOf("") }
     val description = remember { mutableStateOf("") }

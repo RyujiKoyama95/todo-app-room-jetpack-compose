@@ -29,7 +29,7 @@ class TodoViewModel(
         repository = TodoRepository(dao)
     }
 
-    private fun getTodoList() {
+    fun getTodoList() {
         viewModelScope.launch {
             val list = repository.getTodoList()
             _todos.value = list
