@@ -91,8 +91,6 @@ fun MainContent(viewModel: TodoViewModel) {
     }
     
     val isShowDialog = remember { mutableStateOf(false) }
-    val title = remember { mutableStateOf("") }
-    val description = remember { mutableStateOf("") }
 
     Scaffold(floatingActionButton =  {
         FloatingActionButton(onClick = { isShowDialog.value = true }) {
@@ -101,14 +99,7 @@ fun MainContent(viewModel: TodoViewModel) {
     }) {
         val listener = object : OnCreateTodoListener {
             override fun notifyCreateTodo() {
-                val todos = viewModel.todos.value
-                Log.d(MainActivity.TAG, "MainContent todos=$todos")
-                if (todos != null) {
-                    if (todos.isNotEmpty()) {
-                        title.value = todos.last().title
-                        description.value = todos.last().description
-                    }
-                }
+                viewModel.getTodoList()
             }
         }
         viewModel.setListener(listener)
@@ -168,14 +159,17 @@ fun TodoList(viewModel: TodoViewModel) {
     observedTodos.value?.let { todos ->
         LazyColumn {
             items(todos) {
-                TodoRow(it)
+                TodoRow(it, viewModel)
             }
         }
     }
 }
 
 @Composable
-fun TodoRow(todo: Todo) {
+fun TodoRow(
+    todo: Todo,
+    viewModel: TodoViewModel
+) {
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -187,7 +181,7 @@ fun TodoRow(todo: Todo) {
         ) {
             Text(text = todo.title)
             Spacer(modifier = Modifier.weight(1F))
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { viewModel.delete(todo) }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
             }
         }
