@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todoapproomjetpackcompose.OnCreateTodoListener
 import com.example.todoapproomjetpackcompose.data.Todo
 import com.example.todoapproomjetpackcompose.data.TodoDatabase
 import com.example.todoapproomjetpackcompose.data.TodoRepository
@@ -19,9 +18,16 @@ class TodoViewModel(
         const val TAG = "TodoViewModel"
     }
     private val repository: TodoRepository
-    private var listener: OnCreateTodoListener? = null
+    private var updatingTodo: Todo? = null
+
     private var _todos = MutableLiveData<List<Todo>>()
     var todos: LiveData<List<Todo>> = _todos
+
+    private var _title = MutableLiveData<String>()
+    val title: LiveData<String> = _title
+
+    private var _description = MutableLiveData<String>()
+    val description: LiveData<String> = _description
 
     init {
         Log.d(TAG, "init")
@@ -65,5 +71,19 @@ class TodoViewModel(
             repository.delete(todo)
             getTodoList()
         }
+    }
+
+    fun setupTodo(todo: Todo) {
+        updatingTodo = todo
+        _title.value = todo.title
+        _description.value = todo.description
+    }
+
+    fun getUpdatingTodo(): Todo? {
+        return updatingTodo
+    }
+
+    fun isUpdating(): Boolean {
+        return updatingTodo != null
     }
 }

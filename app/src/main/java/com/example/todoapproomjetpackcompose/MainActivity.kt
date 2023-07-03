@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -155,12 +156,19 @@ fun TodoList(viewModel: TodoViewModel) {
 @Composable
 fun TodoRow(
     todo: Todo,
-    viewModel: TodoViewModel
+    viewModel: TodoViewModel,
+    isShowDialog: MutableState<Boolean>
 ) {
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
+            .clickable {
+                viewModel.updateTodo(todo)
+                if (isShowDialog.value) {
+                    EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
+                }
+            }
     ) {
         Row(
             modifier = Modifier.padding(5.dp),
@@ -173,8 +181,4 @@ fun TodoRow(
             }
         }
     }
-}
-
-interface OnCreateTodoListener {
-    fun notifyCreateTodo()
 }
