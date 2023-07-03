@@ -35,8 +35,6 @@ class TodoViewModel(
             _todos.value = list
             Log.d(TAG, "todos=${todos.value}")
             Log.d(TAG, "_todos=${_todos.value}")
-
-            listener?.notifyCreateTodo()
         }
     }
 
@@ -67,9 +65,5 @@ class TodoViewModel(
             repository.delete(todo)
             getTodoList()
         }
-    }
-
-    fun setListener(listener: OnCreateTodoListener) {
-        this.listener = listener
     }
 }

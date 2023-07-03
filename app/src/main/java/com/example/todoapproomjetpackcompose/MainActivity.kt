@@ -97,22 +97,9 @@ fun MainContent(viewModel: TodoViewModel) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add Button")
         }
     }) {
-        val listener = object : OnCreateTodoListener {
-            override fun notifyCreateTodo() {
-                viewModel.getTodoList()
-            }
-        }
-        viewModel.setListener(listener)
-
         if (isShowDialog.value) {
             EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
         }
-
-//        Column {
-//            Text(text = title.value)
-//            Spacer(modifier = Modifier.padding(20.dp))
-//            Text(text = description.value)
-//        }
         
         TodoList(viewModel = viewModel)
     }
