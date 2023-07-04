@@ -59,9 +59,11 @@ class TodoViewModel(
         }
     }
 
-    fun updateTodo(todo: Todo) {
+    fun updateTodo() {
         viewModelScope.launch {
-            repository.updateTodo(todo)
+            val todo = getUpdatingTodo()
+
+//            repository.updateTodo(todo)
             getTodoList()
         }
     }

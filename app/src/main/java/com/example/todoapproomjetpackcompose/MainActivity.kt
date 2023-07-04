@@ -102,7 +102,7 @@ fun MainContent(viewModel: TodoViewModel) {
             EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
         }
         
-        TodoList(viewModel = viewModel)
+        TodoList(viewModel = viewModel, isShowDialog)
     }
 }
 
@@ -142,12 +142,12 @@ fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
 }
 
 @Composable
-fun TodoList(viewModel: TodoViewModel) {
+fun TodoList(viewModel: TodoViewModel, isShowDialog: MutableState<Boolean>) {
     val observedTodos = viewModel.todos.observeAsState()
     observedTodos.value?.let { todos ->
         LazyColumn {
             items(todos) {
-                TodoRow(it, viewModel)
+                TodoRow(it, viewModel, isShowDialog)
             }
         }
     }
@@ -164,10 +164,8 @@ fun TodoRow(
             .fillMaxSize()
             .padding(10.dp)
             .clickable {
-                viewModel.updateTodo(todo)
-                if (isShowDialog.value) {
-                    EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
-                }
+                viewModel.setupTodo(todo)
+                isShowDialog.value = true
             }
     ) {
         Row(
@@ -178,6 +176,10 @@ fun TodoRow(
             Spacer(modifier = Modifier.weight(1F))
             IconButton(onClick = { viewModel.delete(todo) }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+            }
+
+            if (isShowDialog.value) {
+                EditDialog(isShowDialog = isShowDialog, viewModel = viewModel)
             }
         }
     }
