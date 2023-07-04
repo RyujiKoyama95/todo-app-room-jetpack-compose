@@ -61,10 +61,6 @@ class TodoViewModel(
 
     fun updateTodo() {
         viewModelScope.launch {
-            val todo = getUpdatingTodo()
-
-//            repository.updateTodo(todo)
-            getTodoList()
         }
     }
 
