@@ -18,16 +18,10 @@ class TodoViewModel(
         const val TAG = "TodoViewModel"
     }
     private val repository: TodoRepository
-    private var updatingTodo: Todo? = null
+    var updatingTodo: Todo? = null
 
     private var _todos = MutableLiveData<List<Todo>>()
     var todos: LiveData<List<Todo>> = _todos
-
-    private var _title = MutableLiveData<String>()
-    val title: LiveData<String> = _title
-
-    private var _description = MutableLiveData<String>()
-    val description: LiveData<String> = _description
 
     init {
         Log.d(TAG, "init")
@@ -59,8 +53,13 @@ class TodoViewModel(
         }
     }
 
-    fun updateTodo() {
+    fun updateTodo(newTitle: String, newDescription: String) {
         viewModelScope.launch {
+            updatingTodo!!.title = newTitle
+            updatingTodo!!.description = newDescription
+            repository.updateTodo(updatingTodo!!)
+            updatingTodo = null
+            getTodoList()
         }
     }
 
@@ -73,12 +72,6 @@ class TodoViewModel(
 
     fun setupTodo(todo: Todo) {
         updatingTodo = todo
-        _title.value = todo.title
-        _description.value = todo.description
-    }
-
-    fun getUpdatingTodo(): Todo? {
-        return updatingTodo
     }
 
     fun isUpdating(): Boolean {
