@@ -176,7 +176,7 @@ fun TodoRow(
             }
     ) {
         Row(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column() {
@@ -187,7 +187,12 @@ fun TodoRow(
                     fontSize = 25.sp
                 )
                 Spacer(modifier = Modifier.weight(1F))
-                Text(text = todo.description)
+                Surface(color = MaterialTheme.colorScheme.surface) {
+                    Text(
+                        modifier = Modifier.padding(10.dp),
+                        text = todo.description
+                    )
+                }
             }
             Spacer(modifier = Modifier.weight(1F))
             IconButton(onClick = { viewModel.delete(todo) }) {
