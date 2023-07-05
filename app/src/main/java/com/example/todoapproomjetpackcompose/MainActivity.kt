@@ -41,7 +41,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapproomjetpackcompose.data.Todo
@@ -176,7 +179,16 @@ fun TodoRow(
             modifier = Modifier.padding(5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = todo.title)
+            Column() {
+                Text(
+                    text = todo.title,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp
+                )
+                Spacer(modifier = Modifier.weight(1F))
+                Text(text = todo.description)
+            }
             Spacer(modifier = Modifier.weight(1F))
             IconButton(onClick = { viewModel.delete(todo) }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
