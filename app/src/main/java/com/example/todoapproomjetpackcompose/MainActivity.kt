@@ -128,7 +128,11 @@ fun EditDialog(isShowDialog: MutableState<Boolean>, viewModel: TodoViewModel) {
         confirmButton = {
             Button(onClick = {
                 isShowDialog.value = false
-                viewModel.addTodo(title, description)
+                if (viewModel.isUpdating()) {
+                    viewModel.updateTodo(title, description)
+                } else {
+                    viewModel.addTodo(title, description)
+                }
             }) {
                 Text(text = "OK")
             }
