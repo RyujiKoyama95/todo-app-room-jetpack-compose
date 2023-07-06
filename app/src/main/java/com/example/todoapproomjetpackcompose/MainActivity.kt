@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -187,12 +189,16 @@ fun TodoRow(
                     fontSize = 25.sp
                 )
                 Spacer(modifier = Modifier.weight(1F))
-                Surface(color = MaterialTheme.colorScheme.surface) {
-                    Text(
-                        modifier = Modifier.padding(10.dp),
-                        text = todo.description
-                    )
-                }
+                Text(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.surface,
+                            shape = RoundedCornerShape(50.dp)
+                        )
+                        .padding(vertical = 8.dp, horizontal = 16.dp),
+                    text = todo.description
+                )
             }
             Spacer(modifier = Modifier.weight(1F))
             IconButton(onClick = { viewModel.delete(todo) }) {
